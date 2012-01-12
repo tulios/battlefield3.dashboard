@@ -44,45 +44,36 @@
 
                         <% host = "http://battlelog.battlefield.com/" %>
 
-                        <% @data.each do |hash| %>
-                          <% persona = hash["persona"] %>
-                          <% persona_id = persona["personaId"] %>
-                          <% picture = persona["picture"] ? "http://battlelog-cdn.battlefield.com/public/profile/kits/s/#{persona["picture"]}.png" : "http://battlelog-cdn.battlefield.com/public/profile/kits/s/bf3-us-assault.png" %>
-                          <% dogtag = hash["dogtagsForPersona"][persona_id] %>
-                          <% basic_dogtag = dogtag ? "http://battlelog-cdn.battlefield.com/public/profile/bf3/stats/dogtags/la/t/#{dogtag["basicDogTag"]["image"]}.png" : "http://battlelog-cdn.battlefield.com/public/profile/bf3/stats/dogtags/lb/t/defaulttag_right.png" %>
-                          <% advanced_dogtag = dogtag ? "http://battlelog-cdn.battlefield.com/public/profile/bf3/stats/dogtags/lb/t/#{dogtag["advancedDogTag"]["image"]}.png" : "http://battlelog-cdn.battlefield.com/public/profile/bf3/stats/dogtags/la/t/defaulttag_right.png" %>
-                          <% rank = hash["rank"] %>
-                          <% win_rate = "%.2f" % (hash["numWins"].to_f / hash["numLosses"].to_f) %>
-
+                        <% @soldiers.each do |soldier| %>
                           <li>
                             <div class="soldier-name">
                               <h3>
-                                <a href="<%= host %>/bf3/soldier/<%= persona["personaName"] %>/stats/<%= persona_id %>/<%= persona["namespace"] %>/" target="_blank">
-                                  <%= persona["personaName"] %>
+                                <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/stats/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank">
+                                  <%= soldier.name %>
                                 </a>
                               </h3>
-                              <a href="<%= host %>/bf3/soldier/<%= persona["personaName"] %>/stats/<%= persona_id %>/<%= persona["namespace"] %>/" target="_blank" target="_blank" target="_blank" target="_blank">
+                              <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/stats/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank" target="_blank" target="_blank" target="_blank">
                                 <div class="common-gameicon-hori common-game-2-2"></div>
                               </a>
-                              <a href="<%= host %>/bf3/soldier/<%= persona["personaName"] %>/dogtags/<%= persona_id %>/<%= persona["namespace"] %>/" target="_blank" target="_blank" target="_blank">
+                              <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/dogtags/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank" target="_blank" target="_blank">
                                 <div class="soldier-dogtags">
-                                  <img class="dogtag2" src="<%= basic_dogtag %>" alt="">
-                                  <img class="dogtag1" src="<%= advanced_dogtag %>" alt="">
+                                  <img class="dogtag2" src="<%= soldier.basic_dogtag %>" alt="">
+                                  <img class="dogtag1" src="<%= soldier.advanced_dogtag %>" alt="">
                                 </div>
                               </a>
                             </div>
 
-                            <a href="<%= host %>/bf3/soldier/<%= persona["personaName"] %>/dogtags/<%= persona_id %>/<%= persona["namespace"] %>/" target="_blank" target="_blank">
-                              <img class="soldier-rank" src="http://battlelog-cdn.battlefield.com/public/profile/bf3/stats/ranks/small/r<%= rank %>.png" alt="" height="64" width="64">
+                            <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/dogtags/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank" target="_blank">
+                              <img class="soldier-rank" src="http://battlelog-cdn.battlefield.com/public/profile/bf3/stats/ranks/small/r<%= soldier.rank %>.png" alt="" height="64" width="64">
                             </a>
-                            <a href="<%= host %>/bf3/soldier/<%= persona["personaName"] %>/dogtags/<%= persona_id %>/<%= persona["namespace"] %>/" target="_blank">
-                              <img class="" width="48" height="48" src="<%= picture %>">
+                            <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/dogtags/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank">
+                              <img class="" width="48" height="48" src="<%= soldier.picture %>">
                             </a>
                             <table>
                               <tr>
-                                <td><%= hash["score"] %></td>
-                                <td><%= hash["kills"] %></td>
-                                <td class="last"><%= win_rate %></td>
+                                <td><%= soldier.score %></td>
+                                <td><%= soldier.kills %></td>
+                                <td class="last"><%= soldier.win_rate %></td>
                               </tr>
                               <tr>
                                 <th>Score</th>

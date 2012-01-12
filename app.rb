@@ -15,13 +15,39 @@ get '/' do
     lurehendi: "2832660143835504606"
   }
 
-  @data = users.values.collect do |user_id|
+  cdn_url = "http://battlelog-cdn.battlefield.com"
+  picture_path = "/public/profile/kits/s/"
+  dogtag_path = "/public/profile/bf3/stats/dogtags/"
+
+  @soldiers = users.values.collect do |user_id|
     json_data = RestClient.get(url_service.gsub("<USER_ID>", user_id))
-    JSON(json_data)["data"]["soldiersBox"].first
+    hash = JSON(json_data)["data"]["soldiersBox"].first
+
+    persona = hash["persona"]
+    persona_id = persona["personaId"]
+    picture = persona["picture"] ? "#{cdn_url}#{picture_path}#{persona["picture"]}.png" : "#{cdn_url}#{picture_path}bf3-us-assault.png"
+    dogtag = hash["dogtagsForPersona"][persona_id]
+    basic_dogtag = dogtag ? "#{cdn_url}#{dogtag_path}la/t/#{dogtag["basicDogTag"]["image"]}.png" : "#{cdn_url}#{dogtag_path}lb/t/defaulttag_right.png"
+    advanced_dogtag = dogtag ? "#{cdn_url}#{dogtag_path}lb/t/#{dogtag["advancedDogTag"]["image"]}.png" : "#{cdn_url}#{dogtag_path}la/t/defaulttag_right.png"
+
+    OpenStruct.new({
+      id: persona_id,
+      persona: persona,
+      name: persona["personaName"],
+      namespace: persona["namespace"],
+
+      picture: picture,
+      basic_dogtag: basic_dogtag,
+      advanced_dogtag: advanced_dogtag,
+      rank: hash["rank"],
+      win_rate: "%.2f" % (hash["numWins"].to_f / hash["numLosses"].to_f),
+      score: hash["score"].to_i,
+      kills: hash["kills"]
+    })
   end
 
-  @data.sort_by! {|hash| hash["score"].to_i}
-  @data.reverse!
+  @soldiers.sort_by! {|obj| obj.score}
+  @soldiers.reverse!
 
   erb :index
 end
