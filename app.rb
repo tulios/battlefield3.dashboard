@@ -10,14 +10,16 @@ get '/' do
     tuliornelas: "2832658994908040861",
     danielfmartins: "2832660143811904223",
     brunofmsouza: "2832660143832117465",
-    leosipe: "2832658801630550806"
+    leosipe: "2832658801630550806",
+    el_mariel: "2832659598374270655",
+    lurehendi: "2832660143835504606"
   }
 
   @data = users.values.collect do |user_id|
     json_data = RestClient.get(url_service.gsub("<USER_ID>", user_id))
     JSON(json_data)["data"]["soldiersBox"].first
   end
-  
+
   @data.sort_by! {|hash| hash["score"].to_i}
   @data.reverse!
 
