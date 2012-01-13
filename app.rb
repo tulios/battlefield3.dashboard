@@ -12,7 +12,8 @@ get '/' do
     brunofmsouza: "2832660143832117465",
     leosipe: "2832658801630550806",
     el_mariel: "2832659598374270655",
-    lurehendi: "2832660143835504606"
+    lurehendi: "2832660143835504606",
+    danilo_moret: "2832659982774753240"
   }
 
   cdn_url = "http://battlelog-cdn.battlefield.com"
