@@ -58,6 +58,7 @@ helpers do
     advanced_dogtag = dogtag ? "#{CDN_URL}#{DOGTAG_PATH}lb/t/#{dogtag["advancedDogTag"]["image"]}.png" : "#{CDN_URL}#{DOGTAG_PATH}la/t/defaulttag_right.png"
     score = hash["score"].to_i
     time_played = hash["timePlayed"]
+    rank_picture = "#{CDN_URL}/public/profile/bf3/stats/ranks/small/r#{hash["rank"]}.png"
     
     OpenStruct.new({
       id: persona_id,
@@ -69,11 +70,18 @@ helpers do
       basic_dogtag: basic_dogtag,
       advanced_dogtag: advanced_dogtag,
       rank: hash["rank"],
+      rank_picture: rank_picture,
       win_rate: "%.2f" % (hash["numWins"].to_f / hash["numLosses"].to_f),
       score: score,
       kills: hash["kills"],
       score_minute: ((score.to_f / time_played.to_f) * 60).round
     })
+  end
+  
+  def number_format number, delimiter = ','
+    parts = number.to_s.to_str.split('.')
+    parts[0].gsub!(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{delimiter}")
+    parts.join
   end
   
   def host

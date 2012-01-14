@@ -11,6 +11,11 @@
 		</div>
 	</div>						 		
 	<div class="leaderboard-venice-rowlist-middle ">
-		<%= partial :"leaderboard/soldier", collection: @top_kills, locals: {:attribute => :kills } %>
+		<%= partial :"leaderboard/soldier", collection: @top_kills, 
+			locals: {
+				:score_formater => lambda {|soldier|
+					soldier.kills
+				} 
+			} %>
 	</div>
 </div>

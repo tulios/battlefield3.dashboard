@@ -11,6 +11,15 @@
 		</div>
 	</div>						 		
 	<div class="leaderboard-venice-rowlist-middle ">
-		<%= partial :"leaderboard/soldier", collection: @highest_playtime, locals: {:attribute => :time_played } %>
+		<%= partial :"leaderboard/soldier", collection: @highest_playtime, 
+			locals: {
+				:score_formater => lambda {|soldier|
+					time_played = soldier.time_played.to_i
+					mins  = (time_played / 60) % 60
+					hours = time_played / (60 * 60)
+					
+					"#{hours}h #{mins}m"
+				} 
+			} %>
 	</div>
 </div>
