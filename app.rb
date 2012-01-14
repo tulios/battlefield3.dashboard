@@ -2,8 +2,12 @@ require 'sinatra'
 require 'rest-client'
 require 'json'
 require 'ostruct'
+require_relative 'partials'
 
-URL_SERVICE = "http://battlelog.battlefield.com/bf3/user/overviewBoxStats/<USER_ID>/"
+helpers Sinatra::Partials
+
+HOST = "http://battlelog.battlefield.com/"
+URL_SERVICE = "#{HOST}/bf3/user/overviewBoxStats/<USER_ID>/"
 # profile-identifer
 
 CDN_URL = "http://battlelog-cdn.battlefield.com"
@@ -27,9 +31,20 @@ get '/' do
     new_soldier(hash)
   end
 
-  @soldiers.sort_by! {|obj| obj.score}
-  @soldiers.reverse!
-
+  @top_score = @soldiers.sort_by {|obj| obj.score}
+  @top_score.reverse!
+  
+  @top_kills = @soldiers.sort_by {|obj| obj.kills }
+  @top_kills.reverse!
+  
+  @highest_playtime = @soldiers.sort_by {|obj| obj.time_played }
+  @highest_playtime.reverse!
+    
+  @score_minute = @soldiers.sort_by {|obj| obj.score.to_f / obj.time_played.to_f }
+  @score_minute.reverse!
+  
+  @soldiers = @top_score
+  
   erb :index
 end
 
@@ -41,20 +56,27 @@ helpers do
     dogtag = hash["dogtagsForPersona"][persona_id]
     basic_dogtag = dogtag ? "#{CDN_URL}#{DOGTAG_PATH}la/t/#{dogtag["basicDogTag"]["image"]}.png" : "#{CDN_URL}#{DOGTAG_PATH}lb/t/defaulttag_right.png"
     advanced_dogtag = dogtag ? "#{CDN_URL}#{DOGTAG_PATH}lb/t/#{dogtag["advancedDogTag"]["image"]}.png" : "#{CDN_URL}#{DOGTAG_PATH}la/t/defaulttag_right.png"
-
+    score = hash["score"].to_i
+    time_played = hash["timePlayed"]
+    
     OpenStruct.new({
       id: persona_id,
       persona: persona,
       name: persona["personaName"],
       namespace: persona["namespace"],
-
+      time_played: time_played,
       picture: picture,
       basic_dogtag: basic_dogtag,
       advanced_dogtag: advanced_dogtag,
       rank: hash["rank"],
       win_rate: "%.2f" % (hash["numWins"].to_f / hash["numLosses"].to_f),
-      score: hash["score"].to_i,
-      kills: hash["kills"]
+      score: score,
+      kills: hash["kills"],
+      score_minute: ((score.to_f / time_played.to_f) * 60).round
     })
+  end
+  
+  def host
+    HOST
   end
 end

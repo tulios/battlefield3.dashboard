@@ -1,0 +1,16 @@
+<div class="leaderboard-venice-rowlist">
+	<div class="leaderboard-venice-rowlist-left">
+		<div style="text-decoration: none;" id="Mp_Main_Score" href="#">
+			<div class="leaderboard-venice-rowlist-icon">
+				<img src="http://battlelog-cdn.battlefield.com/public/leaderboard/icons/Mp_Main_Seconds.png?v=3173239">
+			</div>
+			<div class="leaderboard-venice-rowlist-left-info ">
+				<div class="leaderboard-venice-rowlist-left-info-title">HIGHEST PLAYTIME</div>
+				<div class="leaderboard-venice-rowlist-left-info-scoretype">Time Played</div>
+			</div>
+		</div>
+	</div>						 		
+	<div class="leaderboard-venice-rowlist-middle ">
+		<%= partial :"leaderboard/soldier", collection: @highest_playtime, locals: {:attribute => :time_played } %>
+	</div>
+</div>

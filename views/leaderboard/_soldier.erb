@@ -1,0 +1,18 @@
+<div class="leaderboard-venice-rowlist-middle-user bubble-title">
+	<div class="leaderboard-venice-rowlist-middle-user-avatar">
+		<div rel="<%= soldier.id %>" class="base-avatar-container base-avatar-size-large">
+			<a href="<%= "#{host}bf3/user/#{soldier.name.downcase}/" %>" class="base-avatar-status-overlay base-avatar-status-overlay-offline">
+				<img src="<%= soldier.picture %>" width="52" height="52">
+			</a>
+		</div>
+	</div>
+	<div class="leaderboard-venice-rowlist-middle-user-username">
+		<%= soldier_counter + 1 %>
+		<a class="base-profile-link" href="<%= "#{host}bf3/user/#{soldier.name.downcase}/" %>">
+			<%= soldier.name %>
+		</a> 
+	</div>
+	<div class="leaderboard-venice-rowlist-middle-user-score">
+		<%= soldier.send(attribute) %>
+	</div>
+</div>

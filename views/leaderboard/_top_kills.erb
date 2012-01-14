@@ -1,0 +1,16 @@
+<div class="leaderboard-venice-rowlist">
+	<div class="leaderboard-venice-rowlist-left">
+		<div style="text-decoration: none;" id="Mp_Main_Score" href="#">
+			<div class="leaderboard-venice-rowlist-icon">
+				<img src="http://battlelog-cdn.battlefield.com/public/leaderboard/icons/Mp_Main_Kills.png?v=3173239">
+			</div>
+			<div class="leaderboard-venice-rowlist-left-info ">
+				<div class="leaderboard-venice-rowlist-left-info-title">TOP KILLS</div>
+				<div class="leaderboard-venice-rowlist-left-info-scoretype">Kills</div>
+			</div>
+		</div>
+	</div>						 		
+	<div class="leaderboard-venice-rowlist-middle ">
+		<%= partial :"leaderboard/soldier", collection: @top_kills, locals: {:attribute => :kills } %>
+	</div>
+</div>

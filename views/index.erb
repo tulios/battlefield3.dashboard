@@ -1,97 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="600">
-    <title>Battlefield3 Dashboard</title>
-
-    <link type="text/css" rel="stylesheet" href="http://battlelog-cdn.battlefield.com/public/base/css/ui-lightness/jquery-ui-1.8.custom.css?v=3173239">
-    <link type="text/css" rel="stylesheet" href="http://battlelog-cdn.battlefield.com/public/generated/bundle_base_index_3368002062.css?v=3173239">
-
-    <link type="text/css" rel="stylesheet" href="http://battlelog-cdn.battlefield.com/public/generated/bundle_base_index_2673680925.css?v=3173239">
-    <link type="text/css" rel="stylesheet" href="http://battlelog-cdn.battlefield.com/public/generated/bundle_base_index_3638168734.css?v=3173239">
-
-    <style type="text/css" media="screen">
-      body {
-        background: none;
-      }
-      .base-middle {
-        background: none;
-      }
-      #profile-main-column {
-        float: none;
-        margin: 16px auto;
-      }
-    </style>
-  </head>
-   <body id="base-bf3-body" class="new-base-bf3-body">
-     <div id="base-wrapper">
-       <div id="content-container">
-         <div id="content">
-           <div class="base-middle profile-page">
-             <div id="profile-user">
-               <div id="profile-main-column">
-               <h1>
-                BF3Dashboard.info
-               </h1>
-               <br/>
-
-                <div class="common-box-title-clean  profile-soldier-list ">
-                 <div class="common-box-container">
-
-                    <div class="common-box-inner ">
-                      <ul id="soldier-list" data="">
-
-                        <% host = "http://battlelog.battlefield.com/" %>
-
-                        <% @soldiers.each do |soldier| %>
-                          <li>
-                            <div class="soldier-name">
-                              <h3>
-                                <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/stats/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank">
-                                  <%= soldier.name %>
-                                </a>
-                              </h3>
-                              <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/stats/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank" target="_blank" target="_blank" target="_blank">
-                                <div class="common-gameicon-hori common-game-2-2"></div>
-                              </a>
-                              <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/dogtags/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank" target="_blank" target="_blank">
-                                <div class="soldier-dogtags">
-                                  <img class="dogtag2" src="<%= soldier.basic_dogtag %>" alt="">
-                                  <img class="dogtag1" src="<%= soldier.advanced_dogtag %>" alt="">
-                                </div>
-                              </a>
-                            </div>
-
-                            <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/dogtags/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank" target="_blank">
-                              <img class="soldier-rank" src="http://battlelog-cdn.battlefield.com/public/profile/bf3/stats/ranks/small/r<%= soldier.rank %>.png" alt="" height="64" width="64">
-                            </a>
-                            <a href="<%= host %>/bf3/soldier/<%= soldier.name %>/dogtags/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank">
-                              <img class="" width="48" height="48" src="<%= soldier.picture %>">
-                            </a>
-                            <table>
-                              <tr>
-                                <td><%= soldier.score %></td>
-                                <td><%= soldier.kills %></td>
-                                <td class="last"><%= soldier.win_rate %></td>
-                              </tr>
-                              <tr>
-                                <th>Score</th>
-                                <th>Kills</th>
-                                <th class="last">W/L Ratio</th>
-                              </tr>
-                            </table>
-                          </li>
-                        <% end %>
-                    </ul>
-                    <div class="base-clear"></div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="refresh" content="600">
+		<title>Battlefield3 Dashboard</title>
+		<%= partial :stylesheets %>
+	</head>
+	<body id="base-bf3-body">
+		<div id="base-wrapper">
+			<div id="content-container">
+				<div id="content">
+					<div class="base-middle">
+						<h1 class="page-title">BF3Dashboard.info</h1>
+						<%= partial "leaderboard/table" %>
+					</div>
+				</div>
+			</div>		
+		</div>		
+	</body>
 </html>
