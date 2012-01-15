@@ -7,7 +7,7 @@ require_relative 'partials'
 helpers Sinatra::Partials
 
 HOST = "http://battlelog.battlefield.com/"
-URL_SERVICE = "#{HOST}/bf3/user/overviewBoxStats/<USER_ID>/"
+URL_SERVICE = "#{HOST}bf3/user/overviewBoxStats/<USER_ID>/"
 # profile-identifer
 
 CDN_URL = "http://battlelog-cdn.battlefield.com"
