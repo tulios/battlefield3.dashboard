@@ -5,3 +5,25 @@ Then, open up a shell at the project root directory and enter the following comm
 
 $ rackup config.ru
 The application should now be running at localhost:9292.
+
+MongoDB collection
+
+# teams
+{
+	"_id" : ObjectId,
+	"id" : ObjectId,
+	"name" : "",
+	"key" : "",
+	"soldiers" : [
+		{
+			"name" : "",
+			"profile_id" : ""
+		},
+		{
+			"name" : "",
+			"profile_id" : ""
+		}
+		...
+	]
+},
+...

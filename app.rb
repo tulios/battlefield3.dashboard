@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/mongo'
 require 'rest-client'
 require 'json'
 require 'ostruct'
@@ -26,13 +27,24 @@ USERS = {
   juzepeleteiro: "2832658994934400286"
 }
 
-get '/' do
-  @soldiers = USERS.values.collect do |user_id|
-    json_data = RestClient.get(URL_SERVICE.gsub("<USER_ID>", user_id))
-    hash = JSON(json_data)["data"]["soldiersBox"].first
-    new_soldier(hash)
-  end
+configure :development do
+  set :mongo, 'mongodb://localhost:27017/bf3dashboard'
+end
 
+configure :production do
+  set :mongo, ''
+end
+
+get '/' do
+  @teams = mongo["teams"].find
+  erb :index
+end
+
+get '/team/:name' do |name|
+  @team = mongo["teams"].find_one(name: name)
+  profile_ids = @team["soldiers"].collect {|hash| hash["profile_id"]}
+  @soldiers = get_soldiers(profile_ids)
+  
   @top_score = @soldiers.sort_by {|obj| obj.score}
   @top_score.reverse!
 
@@ -45,12 +57,18 @@ get '/' do
   @score_minute = @soldiers.sort_by {|obj| obj.score.to_f / obj.time_played.to_f }
   @score_minute.reverse!
 
-  @soldiers = @top_score
-
-  erb :index
+  erb :team
 end
 
 helpers do
+  def get_soldiers profile_ids
+    profile_ids.collect do |user_id|
+      json_data = RestClient.get(URL_SERVICE.gsub("<USER_ID>", user_id))
+      hash = JSON(json_data)["data"]["soldiersBox"].first
+      new_soldier(hash)
+    end
+  end
+  
   def new_soldier hash
     persona = hash["persona"]
     persona_id = persona["personaId"]
@@ -88,5 +106,13 @@ helpers do
 
   def host
     HOST
+  end
+end
+
+module Sinatra
+  module MongoHelper
+    def mongo
+      settings.mongo
+    end
   end
 end

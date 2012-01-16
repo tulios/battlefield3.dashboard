@@ -11,14 +11,8 @@
 			<div id="content-container">
 				<div id="content">
 					<div class="base-middle">
-						<h1 class="page-title">BF3Dashboard.info</h1>
-						<div class="base-middle-content">
-							<ul>
-								<% @teams.each do |team| %>
-									<li><a href="/team/<%= team["name"] %>"><%= team["name"] %></a>
-								<% end %>
-							</ul>
-						</div>
+						<h1 class="page-title"><%= @team["name"] %></h1>
+						<%= partial "leaderboard/table" %>
 					</div>
 				</div>
 			</div>		
