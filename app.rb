@@ -22,10 +22,11 @@ USERS = {
   el_mariel: "2832659598374270655",
   lurehendi: "2832660143835504606",
   danilo_moret: "2832659982774753240",
-  mjrocha_67: "2832660143837888346"
+  mjrocha_67: "2832660143837888346",
+  juzepeleteiro: "2832658994934400286"
 }
 
-get '/' do  
+get '/' do
   @soldiers = USERS.values.collect do |user_id|
     json_data = RestClient.get(URL_SERVICE.gsub("<USER_ID>", user_id))
     hash = JSON(json_data)["data"]["soldiersBox"].first
@@ -34,18 +35,18 @@ get '/' do
 
   @top_score = @soldiers.sort_by {|obj| obj.score}
   @top_score.reverse!
-  
+
   @top_kills = @soldiers.sort_by {|obj| obj.kills }
   @top_kills.reverse!
-  
+
   @highest_playtime = @soldiers.sort_by {|obj| obj.time_played }
   @highest_playtime.reverse!
-    
+
   @score_minute = @soldiers.sort_by {|obj| obj.score.to_f / obj.time_played.to_f }
   @score_minute.reverse!
-  
+
   @soldiers = @top_score
-  
+
   erb :index
 end
 
@@ -60,7 +61,7 @@ helpers do
     score = hash["score"].to_i
     time_played = hash["timePlayed"]
     rank_picture = "#{CDN_URL}/public/profile/bf3/stats/ranks/small/r#{hash["rank"]}.png"
-    
+
     OpenStruct.new({
       id: persona_id,
       persona: persona,
@@ -78,13 +79,13 @@ helpers do
       score_minute: ((score.to_f / time_played.to_f) * 60).round
     })
   end
-  
+
   def number_format number, delimiter = ','
     parts = number.to_s.to_str.split('.')
     parts[0].gsub!(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{delimiter}")
     parts.join
   end
-  
+
   def host
     HOST
   end
