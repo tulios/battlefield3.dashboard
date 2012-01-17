@@ -28,6 +28,7 @@ USERS = {
 }
 
 configure :development do
+  require 'ruby-debug'
   set :mongo, 'mongodb://localhost:27017/bf3dashboard'
 end
 
@@ -60,6 +61,27 @@ get '/team/:name' do |name|
   erb :team
 end
 
+post '/team/:name/new_soldier' do |name|
+  @team = mongo["teams"].find_one(name: name)
+  if params["team_key"] == @team["key"]
+    soldier = get_soldiers([params["profile_id"]]).first
+    if soldier
+      mongo["teams"].update(
+        {"_id" => @team["_id"]},
+        {
+          "$push" => {
+            "soldiers" => {
+              "name" => soldier.name.downcase, 
+              "profile_id" => soldier.profile_id
+            }
+          }
+        })
+    end
+  end
+  
+  redirect "/team/#{name}"
+end
+
 helpers do
   def get_soldiers profile_ids
     profile_ids.collect do |user_id|
@@ -82,6 +104,7 @@ helpers do
 
     OpenStruct.new({
       id: persona_id,
+      profile_id: persona["userId"],
       persona: persona,
       name: persona["personaName"],
       namespace: persona["namespace"],

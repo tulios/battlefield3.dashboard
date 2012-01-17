@@ -1,0 +1,12 @@
+<div class="team-header">
+	<h1 class="page-title">
+		<%= @team["name"] %>
+	</h1>
+	<div class="form-new-soldier">
+		<form action="/team/<%= @team["name"] %>/new_soldier" method="post">
+			<input type="text" name="profile_id" value="profile id" />
+			<input type="text" name="team_key" value="team key" />
+			<input type="submit" value="add soldier"/>
+		</form>
+	</div>
+</div>
