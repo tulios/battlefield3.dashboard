@@ -33,7 +33,7 @@ get '/team/:name' do |name|
   @team = mongo["teams"].find_one(name: name)
   profile_ids = @team["soldiers"].collect {|hash| hash["profile_id"]}
   @soldiers = get_soldiers(profile_ids)
-  
+
   @top_score = @soldiers.sort_by {|obj| obj.score}
   @top_score.reverse!
 
@@ -59,14 +59,14 @@ post '/team/:name/new_soldier' do |name|
         {
           "$push" => {
             "soldiers" => {
-              "name" => soldier.name.downcase, 
-              "profile_id" => soldier.profile_id
+              "name" => soldier.name.downcase,
+              "profile_id" => soldier.profile_id.to_s
             }
           }
         })
     end
   end
-  
+
   redirect "/team/#{name}"
 end
 
@@ -78,7 +78,7 @@ helpers do
       new_soldier(hash)
     end
   end
-  
+
   def new_soldier hash
     persona = hash["persona"]
     persona_id = persona["personaId"]
@@ -89,6 +89,18 @@ helpers do
     score = hash["score"].to_i
     time_played = hash["timePlayed"]
     rank_picture = "#{CDN_URL}/public/profile/bf3/stats/ranks/small/r#{hash["rank"]}.png"
+    num_wins = hash["numWins"].to_f
+    num_losses = hash["numLosses"].to_f
+
+    win_rate = 0
+    if  num_wins > 0 and num_losses > 0
+     win_rate = (num_wins / num_losses)
+   end
+
+    score_minute = 0
+    if score.to_f > 0 and time_played.to_f > 0
+      score_minute = ((score.to_f / time_played.to_f) * 60).floor
+    end
 
     OpenStruct.new({
       id: persona_id,
@@ -102,10 +114,10 @@ helpers do
       advanced_dogtag: advanced_dogtag,
       rank: hash["rank"],
       rank_picture: rank_picture,
-      win_rate: "%.2f" % (hash["numWins"].to_f / hash["numLosses"].to_f),
+      win_rate: "%.2f" % win_rate,
       score: score,
       kills: hash["kills"],
-      score_minute: ((score.to_f / time_played.to_f) * 60).round
+      score_minute: score_minute
     })
   end
 
