@@ -2,6 +2,8 @@ GEM
   remote: http://rubygems.org/
   specs:
     bson (1.5.2)
+    bson_ext (1.5.2)
+      bson (= 1.5.2)
     json (1.6.4)
     mime-types (1.17.2)
     mongo (1.5.2)
@@ -24,6 +26,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bson_ext
   json
   rest-client
   sinatra
