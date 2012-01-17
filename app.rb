@@ -16,7 +16,6 @@ PICTURE_PATH = "/public/profile/kits/s/"
 DOGTAG_PATH = "/public/profile/bf3/stats/dogtags/"
 
 configure :development do
-  require 'ruby-debug'
   set :mongo, 'mongodb://localhost:27017/bf3dashboard'
 end
 
