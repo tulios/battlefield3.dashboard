@@ -32,7 +32,7 @@ configure :development do
 end
 
 configure :production do
-  set :mongo, ''
+  set :mongo, ENV["MONGOLAB_URI"]
 end
 
 get '/' do
