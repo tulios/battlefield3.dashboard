@@ -43,7 +43,11 @@ get '/team/:name' do |name|
   @highest_playtime = @soldiers.sort_by {|obj| obj.time_played }
   @highest_playtime.reverse!
 
-  @score_minute = @soldiers.sort_by {|obj| obj.score.to_f / obj.time_played.to_f }
+  @score_minute = @soldiers.sort_by {|obj|
+    score = obj.score.to_f
+    time_played = obj.time_played.to_f
+    (score > 0 and time_played > 0) ? score / time_played : 0
+  }
   @score_minute.reverse!
 
   erb :team
