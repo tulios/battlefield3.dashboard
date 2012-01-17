@@ -15,18 +15,6 @@ CDN_URL = "http://battlelog-cdn.battlefield.com"
 PICTURE_PATH = "/public/profile/kits/s/"
 DOGTAG_PATH = "/public/profile/bf3/stats/dogtags/"
 
-USERS = {
-  tuliornelas: "2832658994908040861",
-  danielfmartins: "2832660143811904223",
-  brunofmsouza: "2832660143832117465",
-  leosipe: "2832658801630550806",
-  el_mariel: "2832659598374270655",
-  lurehendi: "2832660143835504606",
-  danilo_moret: "2832659982774753240",
-  mjrocha_67: "2832660143837888346",
-  juzepeleteiro: "2832658994934400286"
-}
-
 configure :development do
   require 'ruby-debug'
   set :mongo, 'mongodb://localhost:27017/bf3dashboard'
