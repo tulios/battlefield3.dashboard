@@ -3,7 +3,9 @@ require 'sinatra/mongo'
 require 'rest-client'
 require 'json'
 require 'ostruct'
+
 require_relative 'partials'
+require_relative 'json_response'
 
 helpers Sinatra::Partials
 
@@ -25,7 +27,12 @@ end
 
 get '/' do
   @teams = mongo["teams"].find
-  erb :index
+  
+  if params[:format] and params[:format] == "json"
+    json @teams.map {|team| team.delete("key") ; team}
+  else
+    erb :index
+  end
 end
 
 get '/team/:name' do |name|
@@ -49,7 +56,21 @@ get '/team/:name' do |name|
   }
   @score_minute.reverse!
 
-  erb :team
+  if params[:format] and params[:format] == "json"
+    @team.delete("key")
+    json({
+      team: @team,
+      leaderboard: {
+        top_score: @top_score.map {|o| o.instance_variable_get("@table")},
+        top_kills: @top_kills.map {|o| o.instance_variable_get("@table")},
+        highest_playtime: @highest_playtime.map {|o| o.instance_variable_get("@table")},
+        score_minute: @score_minute.map {|o| o.instance_variable_get("@table")}
+      }
+    })
+    
+  else
+    erb :team
+  end
 end
 
 post '/team/:name/new_soldier' do |name|
@@ -107,11 +128,13 @@ helpers do
 
     OpenStruct.new({
       id: persona_id,
+      url: "#{host}bf3/soldier/#{persona["personaName"]}/stats/#{persona_id}/#{persona["namespace"]}/",
       profile_id: persona["userId"],
       persona: persona,
       name: persona["personaName"],
       namespace: persona["namespace"],
       time_played: time_played,
+      time_played_formated: duration_format(time_played),
       picture: picture,
       basic_dogtag: basic_dogtag,
       advanced_dogtag: advanced_dogtag,
@@ -119,6 +142,7 @@ helpers do
       rank_picture: rank_picture,
       win_rate: "%.2f" % win_rate,
       score: score,
+      score_formated: number_format(score),
       kills: hash["kills"],
       score_minute: score_minute
     })
@@ -128,6 +152,14 @@ helpers do
     parts = number.to_s.to_str.split('.')
     parts[0].gsub!(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{delimiter}")
     parts.join
+  end
+  
+  def duration_format seconds
+		seconds = seconds.to_i
+		mins  = (seconds / 60) % 60
+		hours = seconds / (60 * 60)
+					
+		"#{hours}h #{mins}m"
   end
 
   def host
