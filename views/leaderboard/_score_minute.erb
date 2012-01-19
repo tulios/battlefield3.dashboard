@@ -14,9 +14,7 @@
 		<div class="wrapper">
 			<%= partial :"leaderboard/soldier", collection: @score_minute, 
 				locals: {
-					:score_formater => lambda {|soldier|
-						soldier.score_minute
-					} 
+					:score_formater => lambda {|soldier| soldier.score_minute} 
 				} %>
 		</div>
 	</div>

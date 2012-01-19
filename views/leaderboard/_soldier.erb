@@ -1,14 +1,14 @@
 <div class="leaderboard-venice-rowlist-middle-user bubble-title">
 	<div class="leaderboard-venice-rowlist-middle-user-avatar">
 		<div rel="<%= soldier.id %>" class="base-avatar-container base-avatar-size-large">
-			<a href="<%= host %>bf3/soldier/<%= soldier.name %>/stats/<%= soldier.id %>/<%= soldier.namespace %>/" class="base-avatar-status-overlay base-avatar-status-overlay-offline" target="_blank">
+			<a href="<%= soldier.url %>" class="base-avatar-status-overlay base-avatar-status-overlay-offline" target="_blank">
 				<img src="<%= soldier.picture %>" width="52" height="52">
 			</a>
 		</div>
 	</div>
 	<div class="leaderboard-venice-rowlist-middle-user-username">
 		<%= "#{soldier_counter + 1}º" %>
-		<a class="base-profile-link" href="<%= host %>bf3/soldier/<%= soldier.name %>/stats/<%= soldier.id %>/<%= soldier.namespace %>/" target="_blank">
+		<a class="base-profile-link" href="<%= soldier.url %>" target="_blank">
 			<%= soldier.name %>
 		</a> 
 	</div>
