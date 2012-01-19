@@ -8,22 +8,24 @@ The application should now be running at localhost:9292.
 
 MongoDB collection
 
-# teams
-{
-	"_id" : ObjectId,
-	"id" : ObjectId,
-	"name" : "",
-	"key" : "",
-	"soldiers" : [
-		{
-			"name" : "",
-			"profile_id" : ""
-		},
-		{
-			"name" : "",
-			"profile_id" : ""
-		}
-		...
-	]
-},
-...
+	# teams
+	{
+		"_id" : ObjectId,
+		"name" : "",
+		"key" : "",
+		"soldiers" : [
+			{
+				"name" : "",
+				"profile_id" : ""
+			},
+			{
+				"name" : "",
+				"profile_id" : ""
+			}
+			...
+		]
+	},
+	...
+	
+/?format=json
+/team/team_name/?format=json
