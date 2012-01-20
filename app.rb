@@ -62,9 +62,9 @@ get '/team/:name' do |name|
       leaderboard: {
         top_score: @top_score.map {|o| o.instance_variable_get("@table")},
         top_kills: @top_kills.map {|o| o.instance_variable_get("@table")},
-        highest_playtime: @highest_playtime.map {|o| o.instance_variable_get("@table")},
+        kill_death_ratio: @kill_death_ratio.map {|o| o.instance_variable_get("@table")},
         score_minute: @score_minute.map {|o| o.instance_variable_get("@table")},
-        kill_death_ratio: @kill_death_ratio.map {|o| o.instance_variable_get("@table")}
+        highest_playtime: @highest_playtime.map {|o| o.instance_variable_get("@table")}
       }
     })
     
