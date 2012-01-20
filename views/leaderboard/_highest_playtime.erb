@@ -14,7 +14,7 @@
 		<div class="wrapper">
 			<%= partial :"leaderboard/soldier", collection: @highest_playtime, 
 				locals: {
-					:score_formater => lambda {|soldier| soldier.time_played_formated}
+					:score_formater => lambda {|soldier| soldier.time_played_formatted}
 				} %>
 		</div>
 	</div>

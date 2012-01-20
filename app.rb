@@ -43,18 +43,17 @@ get '/team/:name' do |name|
   @top_score = @soldiers.sort_by {|obj| obj.score}
   @top_score.reverse!
 
-  @top_kills = @soldiers.sort_by {|obj| obj.kills }
+  @top_kills = @soldiers.sort_by {|obj| obj.kills}
   @top_kills.reverse!
 
-  @highest_playtime = @soldiers.sort_by {|obj| obj.time_played }
+  @highest_playtime = @soldiers.sort_by {|obj| obj.time_played}
   @highest_playtime.reverse!
 
-  @score_minute = @soldiers.sort_by {|obj|
-    score = obj.score.to_f
-    time_played = obj.time_played.to_f
-    (score > 0 and time_played > 0) ? score / time_played : 0
-  }
+  @score_minute = @soldiers.sort_by {|obj| obj.score_minute}
   @score_minute.reverse!
+
+  @kill_death_ratio = @soldiers.sort_by {|obj| obj.kill_death_ratio}
+  @kill_death_ratio.reverse!
 
   if params[:format] and params[:format] == "json"
     @team.delete("key")
@@ -64,7 +63,8 @@ get '/team/:name' do |name|
         top_score: @top_score.map {|o| o.instance_variable_get("@table")},
         top_kills: @top_kills.map {|o| o.instance_variable_get("@table")},
         highest_playtime: @highest_playtime.map {|o| o.instance_variable_get("@table")},
-        score_minute: @score_minute.map {|o| o.instance_variable_get("@table")}
+        score_minute: @score_minute.map {|o| o.instance_variable_get("@table")},
+        kill_death_ratio: @kill_death_ratio.map {|o| o.instance_variable_get("@table")}
       }
     })
     
@@ -115,7 +115,10 @@ helpers do
     rank_picture = "#{CDN_URL}/public/profile/bf3/stats/ranks/small/r#{hash["rank"]}.png"
     num_wins = hash["numWins"].to_f
     num_losses = hash["numLosses"].to_f
-
+    kills = hash["kills"].to_i
+    deaths = hash["deaths"].to_i
+    kill_death_ratio = (kills.to_f / deaths.to_f)
+    
     win_rate = 0
     if  num_wins > 0 and num_losses > 0
      win_rate = (num_wins / num_losses)
@@ -134,7 +137,7 @@ helpers do
       name: persona["personaName"],
       namespace: persona["namespace"],
       time_played: time_played,
-      time_played_formated: duration_format(time_played),
+      time_played_formatted: duration_format(time_played),
       picture: picture,
       basic_dogtag: basic_dogtag,
       advanced_dogtag: advanced_dogtag,
@@ -142,9 +145,12 @@ helpers do
       rank_picture: rank_picture,
       win_rate: "%.2f" % win_rate,
       score: score,
-      score_formated: number_format(score),
-      kills: hash["kills"],
-      score_minute: score_minute
+      score_formatted: number_format(score),
+      score_minute: score_minute,
+      kills: kills,
+      deaths: deaths,
+      kill_death_ratio: kill_death_ratio,
+      kill_death_ratio_formatted: "%.2f" % kill_death_ratio
     })
   end
 
